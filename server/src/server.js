@@ -14,13 +14,14 @@ const startServer = async () => {
     console.log('✓ Database connection successful');
 
     // Start Express server
-    const server = app.listen(PORT, () => {
+    const server = app.listen(PORT, '0.0.0.0', () => {
       console.log(`
 ╔════════════════════════════════════════╗
 ║   Water Monitoring Backend Server      ║
 ╠════════════════════════════════════════╣
 ║  Environment: ${NODE_ENV.padEnd(30, ' ')} ║
 ║  Port: ${PORT.toString().padEnd(35, ' ')} ║
+║  Host: 0.0.0.0 (IPv4 enabled)          ║
 ║  Status: Running                       ║
 ╚════════════════════════════════════════╝
       `);
