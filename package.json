@@ -4,7 +4,7 @@
   "main": "app.js",
   "scripts": {
     "dev": "concurrently \"npm run dev --prefix server\" \"npm run dev --prefix client\"",
-    "postinstall": "npm install --prefix server && cd server && npx prisma generate && npx prisma db push --accept-data-loss && cd .. && npm install --prefix client && npm run build --prefix client",
+    "postinstall": "npm install --prefix server && cd server && npx prisma generate && cd .. && npm install --prefix client && npm run build --prefix client",
     "start": "node app.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
