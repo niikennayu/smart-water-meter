@@ -1,7 +1,6 @@
 {
   "name": "ta26_watermeter",
   "version": "1.0.0",
-  "type": "module",
   "main": "app.js",
   "scripts": {
     "dev": "concurrently \"npm run dev --prefix server\" \"npm run dev --prefix client\"",

@@ -1,12 +1,10 @@
-import process from 'process';
-import path from 'path';
-import { fileURLToPath } from 'url';
-
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
+const process = require('process');
+const path = require('path');
 
 // Change working directory to server so dotenv finds server/.env
 process.chdir(path.join(__dirname, 'server'));
 
-// Now load the actual server
-import('./src/server.js');
+// Now dynamically import the actual server (which is an ES module)
+import('./src/server.js').catch(err => {
+    console.error("Failed to load server:", err);
+});
