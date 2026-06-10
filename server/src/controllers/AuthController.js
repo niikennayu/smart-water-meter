@@ -152,7 +152,7 @@ export class AuthController {
 
       return res.status(500).json({
         success: false,
-        message: "Server error",
+        message: "Server Error: " + (error.message || String(error)),
       });
 
     }
