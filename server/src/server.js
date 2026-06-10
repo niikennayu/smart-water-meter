@@ -22,8 +22,31 @@ const startServer = async () => {
     });
 
     // Test database connection AFTER server starts
-    prisma.$queryRaw`SELECT 1`.then(() => {
+    prisma.$queryRaw`SELECT 1`.then(async () => {
         console.log('✓ Database connection successful');
+        
+        // Auto-seed admin user since the database is brand new
+        try {
+          const bcrypt = await import('bcrypt');
+          const adminEmail = 'andi.hidayat96@gmail.com';
+          const existingAdmin = await prisma.user.findFirst({ where: { email: adminEmail } });
+          if (!existingAdmin) {
+            const hashedPassword = await bcrypt.hash('andi123', 10);
+            await prisma.user.create({
+              data: {
+                name: 'Andi Hidayat',
+                email: adminEmail,
+                password: hashedPassword,
+                role: 'admin',
+                customer_number: 'ADM-001'
+              }
+            });
+            console.log('✓ Admin user auto-seeded successfully!');
+          }
+        } catch (seedErr) {
+          console.error('✗ Failed to auto-seed admin:', seedErr);
+        }
+        
     }).catch((err) => {
         console.error('✗ Failed to connect to database:', err);
     });
