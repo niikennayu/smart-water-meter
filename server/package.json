@@ -26,9 +26,6 @@
   "author": "",
   "license": "MIT",
   "dependencies": {
-    "@neondatabase/serverless": "^0.10.0",
-    "@prisma/adapter-neon": "^5.22.0",
-    "@prisma/adapter-pg": "^5.22.0",
     "@prisma/client": "^5.22.0",
     "@react-email/render": "^2.0.8",
     "bcrypt": "^5.1.0",
@@ -45,12 +42,10 @@
     "morgan": "^1.10.0",
     "nodemailer": "^8.0.7",
     "pdfkit": "^0.18.0",
-    "pg": "^8.21.0",
     "prisma": "^5.22.0",
     "react": "^19.2.6",
     "react-dom": "^19.2.6",
     "uuid": "^9.0.1",
-    "ws": "^8.21.0",
     "xendit-node": "^7.0.0"
   },
   "devDependencies": {
