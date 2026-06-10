@@ -8,12 +8,7 @@ const PORT = process.env.PORT || 3000;
 const NODE_ENV = process.env.NODE_ENV || 'development';
 
 const startServer = async () => {
-  try {
-    // Test database connection
-    await prisma.$queryRaw`SELECT 1`;
-    console.log('✓ Database connection successful');
-
-    // Start Express server
+    // Start Express server immediately so Hostinger Health Check passes!
     const server = app.listen(PORT, '0.0.0.0', () => {
       console.log(`
 ╔════════════════════════════════════════╗
@@ -25,6 +20,13 @@ const startServer = async () => {
 ║  Status: Running                       ║
 ╚════════════════════════════════════════╝
       `);
+    });
+
+    // Test database connection AFTER server starts
+    prisma.$queryRaw`SELECT 1`.then(() => {
+        console.log('✓ Database connection successful');
+    }).catch((err) => {
+        console.error('✗ Failed to connect to database:', err);
     });
 
     // Handle server shutdown gracefully
@@ -59,10 +61,6 @@ const startServer = async () => {
       process.exit(1);
     });
 
-  } catch (error) {
-    console.error('✗ Failed to start server:', error.message);
-    process.exit(1);
-  }
 };
 
 startServer();
