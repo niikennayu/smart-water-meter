@@ -25,28 +25,39 @@ const startServer = async () => {
     prisma.$queryRaw`SELECT 1`.then(async () => {
         console.log('✓ Database connection successful');
         
-        // Auto-seed admin user since the database is brand new
-        try {
-          const bcrypt = await import('bcrypt');
-          const adminEmail = 'andi.hidayat96@gmail.com';
-          const existingAdmin = await prisma.user.findFirst({ where: { email: adminEmail } });
-          if (!existingAdmin) {
-            const hashedPassword = await bcrypt.hash('andi123', 10);
-            await prisma.user.create({
-              data: {
-                name: 'Andi Hidayat',
-                email: adminEmail,
-                password: hashedPassword,
-                role: 'admin',
-                customer_number: 'ADM-001'
+        // Run database migration asynchronously to avoid Hostinger 503 timeout
+        console.log('Pushing database schema...');
+        import('child_process').then(({ exec }) => {
+          exec('npx prisma db push --accept-data-loss', async (error, stdout, stderr) => {
+            if (error) {
+              console.error('✗ Failed to push schema:', error);
+              return;
+            }
+            console.log('✓ Schema pushed successfully!');
+            
+            // Auto-seed admin user since the database is brand new
+            try {
+              const bcrypt = await import('bcrypt');
+              const adminEmail = 'andi.hidayat96@gmail.com';
+              const existingAdmin = await prisma.user.findFirst({ where: { email: adminEmail } });
+              if (!existingAdmin) {
+                const hashedPassword = await bcrypt.hash('andi123', 10);
+                await prisma.user.create({
+                  data: {
+                    name: 'Andi Hidayat',
+                    email: adminEmail,
+                    password: hashedPassword,
+                    role: 'admin',
+                    customer_number: 'ADM-001'
+                  }
+                });
+                console.log('✓ Admin user auto-seeded successfully!');
               }
-            });
-            console.log('✓ Admin user auto-seeded successfully!');
-          }
-        } catch (seedErr) {
-          console.error('✗ Failed to auto-seed admin:', seedErr);
-        }
-        
+            } catch (seedErr) {
+              console.error('✗ Failed to auto-seed admin:', seedErr);
+            }
+          });
+        });
     }).catch((err) => {
         console.error('✗ Failed to connect to database:', err);
     });
