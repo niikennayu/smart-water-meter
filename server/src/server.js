@@ -9,14 +9,13 @@ const NODE_ENV = process.env.NODE_ENV || 'development';
 
 const startServer = async () => {
     // Start Express server immediately so Hostinger Health Check passes!
-    const server = app.listen(PORT, '0.0.0.0', () => {
+    const server = app.listen(PORT, () => {
       console.log(`
 ╔════════════════════════════════════════╗
 ║   Water Monitoring Backend Server      ║
 ╠════════════════════════════════════════╣
 ║  Environment: ${NODE_ENV.padEnd(30, ' ')} ║
 ║  Port: ${PORT.toString().padEnd(35, ' ')} ║
-║  Host: 0.0.0.0 (IPv4 enabled)          ║
 ║  Status: Running                       ║
 ╚════════════════════════════════════════╝
       `);
