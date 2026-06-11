@@ -1,14 +1,17 @@
 import { PrismaClient } from '@prisma/client';
-import { PrismaClient as PrismaClientEdge } from '@prisma/client/extension'; // If needed, but usually just standard Client is fine
-import { PrismaMariaDb } from '@prisma/adapter-mariadb';
-import * as mariadb from 'mariadb';
+import { PrismaNeon } from '@prisma/adapter-neon';
+import { Pool, neonConfig } from '@neondatabase/serverless';
+import ws from 'ws';
 
-// Initialize MariaDB Pool
+// Neon requires a WebSocket constructor in Node.js
+neonConfig.webSocketConstructor = ws;
+
+// Initialize Neon Pool
 const connectionString = process.env.DATABASE_URL;
-const pool = mariadb.createPool(connectionString);
+const pool = new Pool({ connectionString });
 
-// Initialize Prisma with the MariaDB adapter
-const adapter = new PrismaMariaDb(pool);
+// Initialize Prisma with the Neon adapter
+const adapter = new PrismaNeon(pool);
 
 const prisma = new PrismaClient({
   adapter,
