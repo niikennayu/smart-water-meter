@@ -71,7 +71,7 @@ const startServer = async () => {
     // Handle unhandled exceptions
     process.on('uncaughtException', (error) => {
       console.error('[UNCAUGHT EXCEPTION]', error);
-      process.exit(1);
+      // Removed process.exit(1) to prevent Hostinger 503
     });
 
     process.on('unhandledRejection', (reason, promise) => {
@@ -79,7 +79,7 @@ const startServer = async () => {
         reason,
         promise
       });
-      process.exit(1);
+      // Removed process.exit(1) to prevent Hostinger 503
     });
 
 };
